@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import test.project.financial_api.api.dto.AppUserInfoResponse;
 import test.project.financial_api.api.dto.user.AppUserCreateRequest;
 import test.project.financial_api.api.dto.user.AppUserUpdateRequest;
-import test.project.financial_api.mapper.AppUserMapper;
 import test.project.financial_api.service.AppUserService;
 
 @RestController
@@ -20,32 +19,25 @@ import test.project.financial_api.service.AppUserService;
 public class AppUserRestController implements AppUserController {
   
   AppUserService appUserService;
-  AppUserMapper appUserMapper;
   
   @Override
   public ResponseEntity<AppUserInfoResponse> create(final AppUserCreateRequest appUserCreateRequest) {
     return ResponseEntity.ok(
-      appUserMapper.fromEntityToDto(
-        appUserService.create(appUserCreateRequest)
-      )
+      appUserService.create(appUserCreateRequest)
     );
   }
   
   @Override
   public ResponseEntity<AppUserInfoResponse> get() {
     return ResponseEntity.ok(
-      appUserMapper.fromEntityToDto(
-        appUserService.getUserFromSecurityContext()
-      )
+      appUserService.getUserFromSecurityContext()
     );
   }
   
   @Override
   public ResponseEntity<AppUserInfoResponse> update(final AppUserUpdateRequest appUserUpdateRequest) {
     return ResponseEntity.ok(
-      appUserMapper.fromEntityToDto(
-        appUserService.update(appUserUpdateRequest)
-      )
+      appUserService.update(appUserUpdateRequest)
     );
   }
 }

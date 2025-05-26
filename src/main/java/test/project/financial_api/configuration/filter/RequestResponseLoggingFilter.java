@@ -38,31 +38,30 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
     final ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
     
     try {
+      
       filterChain.doFilter(requestWrapper, responseWrapper);
-    } finally {
-      try {
-        final String requestBody = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
-        final String responseBody = new String(responseWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
-        
-        log.info("""
-            [REQUEST] {} {}
-            Headers: {}
-            Body: {}
-            """,
-          request.getMethod(), request.getRequestURI(),
-          HttpUtil.headers(request), requestBody);
-        
-        log.info("""
-            [RESPONSE] Status: {}
-            Body: {}
-            """,
-          response.getStatus(), responseBody
-        );
-        
-        responseWrapper.copyBodyToResponse();
-      } catch (final Exception ex) {
-        log.error("Logging: {}", ex.getMessage());
-      }
+      
+      final String requestBody = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
+      final String responseBody = new String(responseWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
+      
+      log.info("""
+          [REQUEST] {} {}
+          Headers: {}
+          Body: {}
+          """,
+        request.getMethod(), request.getRequestURI(),
+        HttpUtil.headers(request), requestBody);
+      
+      log.info("""
+          [RESPONSE] Status: {}
+          Body: {}
+          """,
+        response.getStatus(), responseBody
+      );
+      
+      responseWrapper.copyBodyToResponse();
+    } catch (final Exception ex) {
+      log.error("Logging: {}", ex.getMessage());
     }
   }
 }

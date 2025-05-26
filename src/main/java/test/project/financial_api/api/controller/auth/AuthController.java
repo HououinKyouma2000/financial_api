@@ -11,10 +11,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import test.project.financial_api.api.dto.auth.AuthRequest;
-import test.project.financial_api.api.dto.auth.AuthResponse;
 import test.project.financial_api.api.dto.ErrorModel;
 import test.project.financial_api.api.dto.ValidationErrorModel;
+import test.project.financial_api.api.dto.auth.AuthRequest;
+import test.project.financial_api.api.dto.auth.AuthResponse;
 
 @ApiResponses(value = {
   @ApiResponse(responseCode = "200", description = "Success"),

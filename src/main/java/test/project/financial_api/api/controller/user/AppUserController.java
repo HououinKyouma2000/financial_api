@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import test.project.financial_api.api.dto.AppUserInfoResponse;
-import test.project.financial_api.api.dto.user.AppUserCreateRequest;
-import test.project.financial_api.api.dto.user.AppUserUpdateRequest;
 import test.project.financial_api.api.dto.ErrorModel;
 import test.project.financial_api.api.dto.ValidationErrorModel;
+import test.project.financial_api.api.dto.user.AppUserCreateRequest;
+import test.project.financial_api.api.dto.user.AppUserUpdateRequest;
 
 @ApiResponses(value = {
   @ApiResponse(responseCode = "200", description = "Success"),
