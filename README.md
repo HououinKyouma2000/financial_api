@@ -5,7 +5,7 @@
 
 2)Второй способ запуска 
 ./gradlew bootJar
-docker-compose
+docker-compose -f full-compose.yaml up
 
 
 Open Api
