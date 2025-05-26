@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  docker:
+    compose:
+      enabled: true
+      skip:
+        in-tests: false
+      file: docker-compose.yaml
+
+  application:
+    name: financial api
+  threads:
+    virtual:
+      enabled: true
+  groovy:
+    template:
+      check-template-location: false
+  liquibase:
+    change-log: classpath:/db/changelog/DatabaseChangeLog.yaml
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      connection-timeout: 20000
+      pool-name: FINANCIAL_API_POOL
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show_sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  security:
+    key: ${SECURITY_KEY:cXdlcnR5dWlvcGFzZGZnaGprbHp4Y3Zibm1xd2VydHk=}
+    token:
+      expiration: ${SECURITY_EXPIRATION:15}
+
+springdoc:
+  api-docs:
+    path: /swagger/openapi
+    version: openapi_3_0
+  swagger-ui:
+    enabled: true
+    disable-swagger-default-url: true
+    path: /swagger/openapi-ui.html
+    operationsSorter: method

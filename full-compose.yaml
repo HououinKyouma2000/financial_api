@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  financial-api:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - tmpfs:/var/lib/postgresql/data
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/financial
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - db
+    networks:
+      - backend
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: financial
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  tmpfs:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs

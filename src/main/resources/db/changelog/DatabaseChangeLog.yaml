@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - includeAll:
+      path: db/changelog/account
+  - includeAll:
+      path: db/changelog/user
+  - includeAll:
+      path: db/changelog/transfer
+  - includeAll:
+      path: db/changelog/mock
