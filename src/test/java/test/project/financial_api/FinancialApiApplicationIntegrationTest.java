@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.MultiValueMap;
 import test.project.financial_api.api.dto.AppUserInfoResponse;
 import test.project.financial_api.api.dto.PageResponse;
 import test.project.financial_api.api.dto.auth.AuthRequest;
@@ -167,7 +168,39 @@ class FinancialApiApplicationIntegrationTest {
       new TypeReference<PageResponse<TransferInfoResponse>>() {
       });
     Assertions.assertNotNull(response);
-    Assertions.assertNotNull(response.totalElements());
+    Assertions.assertEquals(1, response.totalElements());
+  }
+  
+  @Test
+  @Order(9)
+  void getAllTransferInfo() throws Exception {
+    final ResultActions createProduct = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/transfer/all")
+        .headers(getAuthHeader()))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    
+    final PageResponse<TransferInfoResponse> response = objectMapper.readValue(createProduct.andReturn().getResponse().getContentAsString(),
+      new TypeReference<PageResponse<TransferInfoResponse>>() {
+      });
+    Assertions.assertNotNull(response);
+    Assertions.assertEquals(3, response.totalElements());
+  }
+  
+  @Test
+  @Order(9)
+  void getAllTransferInfoByDate() throws Exception {
+    final ResultActions createProduct = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/transfer/by-date")
+        .param("from", "2024-04-01T10:00:00")
+        .param("to", "2024-04-02T15:30:00")
+        .headers(getAuthHeader()))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    
+    final PageResponse<TransferInfoResponse> response = objectMapper.readValue(createProduct.andReturn().getResponse().getContentAsString(),
+      new TypeReference<PageResponse<TransferInfoResponse>>() {
+      });
+    Assertions.assertNotNull(response);
+    Assertions.assertEquals(2, response.totalElements());
   }
   
   private static HttpHeaders getNotAuthHeader() {
