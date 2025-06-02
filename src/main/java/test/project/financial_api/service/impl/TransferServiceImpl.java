@@ -35,17 +35,23 @@ public class TransferServiceImpl implements TransferService {
   @Override
   @Transactional
   public TransferInfoResponse transfer(final TransferRequest transferRequest) {
-    if (transferRequest.senderAccount().equals(transferRequest.recipientAccount())) {
-      throw new TransferAccountsEqualsExceptions();
-    }
-    
     if (!appUserService.getUserEntityFromSecurityContext().getAccount().getId()
       .equals(transferRequest.senderAccount())) {
       throw new ValidateAccountOwnerException();
     }
     
-    final AccountEntity senderAccount = accountService.debit(transferRequest.senderAccount(), transferRequest.amount());
-    final AccountEntity recipientAccount = accountService.credit(transferRequest.recipientAccount(), transferRequest.amount());
+    int compareAccount = transferRequest.senderAccount().compareTo(transferRequest.recipientAccount());
+    AccountEntity senderAccount;
+    AccountEntity recipientAccount;
+    if (compareAccount < 0) {
+      senderAccount = accountService.debit(transferRequest.senderAccount(), transferRequest.amount());
+      recipientAccount = accountService.credit(transferRequest.recipientAccount(), transferRequest.amount());
+    } else if (compareAccount > 0) {
+      recipientAccount = accountService.credit(transferRequest.recipientAccount(), transferRequest.amount());
+      senderAccount = accountService.debit(transferRequest.senderAccount(), transferRequest.amount());
+    } else {
+      throw new TransferAccountsEqualsExceptions();
+    }
     
     final TransferEntity transfer = TransferEntity.builder()
       .amount(transferRequest.amount())
